@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form ,Alert} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import './App.css';
 import axios from 'axios';
 import { isValidSwedishPIN } from './components/isValidSwedishPIN'
@@ -46,6 +46,7 @@ class App extends Component {
     };
   }
 
+  //Handled Form Submit Herre
   handleSubmit = e => {
     e.preventDefault();
 
@@ -57,18 +58,21 @@ class App extends Component {
         Email: ${this.state.email}
         Country: ${this.state.country}
       `);
+
+      //removed data from local storage after submission
       localStorage.removeItem("ssn")
       localStorage.removeItem("phoneno")
       localStorage.removeItem("email")
       localStorage.removeItem("country")
       alert("Submit Successful")
-      // window.location.reload();
+      window.location.reload();
     } else {
       alert("Form Invalid! Fillup Data Correctly")
       console.error("Form Invalid! Fillup Data Correctly");
     }
   };
 
+  //Validation & Checking For Form Data 
   handleChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -77,9 +81,9 @@ class App extends Component {
     switch (name) {
       case "ssn":
         formErrors.ssn =
-          (value.length < 10 ? "10 Characters Required" : "" )||
-          (value.length === 10 && !isValidSwedishPIN(value)) ? "Wrong SSN" : "" ||
-          (value.length > 10 ? "SSN Must Be 10 Digit No" : "")
+          (value.length < 10 ? "10 Characters Required" : "") ||
+            (value.length === 10 && !isValidSwedishPIN(value)) ? "Wrong SSN" : "" ||
+            (value.length > 10 ? "SSN Must Be 10 Digit No" : "")
         // console.log(isValidSwedishPIN("6408233234"));
         break;
       case "phoneno":
@@ -100,9 +104,10 @@ class App extends Component {
 
   };
 
+  //Hook For Checking Data, Fetch Data When Mounted
   componentDidMount() {
     //Checking Local Storage Value For Form 
-    let data ={
+    let data = {
       ssn: localStorage.getItem('ssn'),
       phoneno: localStorage.getItem('phoneno'),
       email: localStorage.getItem('email'),
@@ -131,7 +136,8 @@ class App extends Component {
     }
 
   }
-  
+
+  //Saving Current values to state
   funcSsn = e => {
     this.handleChange(e)
     this.onChange = this.setState({ ssn: e.target.value })
@@ -153,6 +159,7 @@ class App extends Component {
     localStorage.setItem('country', e.target.value);
   }
 
+  //HTML Reder
   render() {
     const countryList = this.state.countries.map(function (country, index) {
       return (
@@ -225,7 +232,7 @@ class App extends Component {
             </div>
 
           </form>
-          
+
         </div>
       </div>
     );
