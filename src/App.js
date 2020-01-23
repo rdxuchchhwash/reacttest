@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form } from 'react-bootstrap';
+import { Form ,Alert} from 'react-bootstrap';
 import './App.css';
 import axios from 'axios';
 import { isValidSwedishPIN } from './components/isValidSwedishPIN'
@@ -21,7 +21,7 @@ const formValid = ({ formErrors, ...rest }) => {
 
   // validate the form was filled out
   Object.values(rest).forEach(val => {
-    val === null && (valid = false);
+    val === "" && (valid = false);
   });
 
   return valid;
@@ -51,7 +51,7 @@ class App extends Component {
 
     if (formValid(this.state)) {
       console.log(`
-        --SUBMITTING--
+        Form Submitted Successfully
         SSN: ${this.state.ssn}
         Phone No: ${this.state.phoneno}
         Email: ${this.state.email}
@@ -61,8 +61,11 @@ class App extends Component {
       localStorage.removeItem("phoneno")
       localStorage.removeItem("email")
       localStorage.removeItem("country")
+      alert("Submit Successful")
+      // window.location.reload();
     } else {
-      console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
+      alert("Form Invalid! Fillup Data Correctly")
+      console.error("Form Invalid! Fillup Data Correctly");
     }
   };
 
@@ -222,6 +225,7 @@ class App extends Component {
             </div>
 
           </form>
+          
         </div>
       </div>
     );
